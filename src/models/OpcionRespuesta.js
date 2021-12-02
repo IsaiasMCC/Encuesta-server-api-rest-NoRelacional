@@ -1,9 +1,12 @@
 const pool = require('../database/connection');
 
 
-const get_OpcionRespuesta = async (id)  => {
+const get_OpcionRespuestas = async (id)  => {
     try{
-        return await( pool.query(`SELECT * FROM opcion_respuesta WHERE opcion_respuesta.id = '${id}'`)).rows[0];
+        const result =  (await pool.query(`SELECT opcion_respuesta.value FROM pregunta, opcion_respuesta WHERE pregunta.id = ${id} and pregunta.id = opcion_respuesta.id_pregunta`)).rows;
+        if (result > 0)
+        return result;
+        else return false;
     }catch{
         return false;
     }
@@ -20,6 +23,6 @@ const set_OpcionRespuesta = async (value, id_pregunta)=>{
 }
 
 module.exports = {
-    get_OpcionRespuesta,
+    get_OpcionRespuestas,
     set_OpcionRespuesta
 }

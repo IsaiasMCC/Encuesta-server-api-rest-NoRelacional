@@ -33,6 +33,8 @@ class Server{
         this.app.use('/api/v1/tipopreguntas', require('../routes/tipoPregunta'));
         this.app.use('/api/v1/encuestas', require('../routes/encuesta'));
         this.app.use('/api/v1/preguntas', require('../routes/pregunta'));
+        this.app.use('/api/v1/seccions', require('../routes/seccion'));
+        this.app.use('/api/v1/opcionrespuestas', require('../routes/opcionRespuesta'));
     }
 
     listen(){

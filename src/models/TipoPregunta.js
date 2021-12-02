@@ -3,7 +3,8 @@ const pool = require('../database/connection');
 
 const get_TipoPregunta = async (id)  => {
     try{
-        return (await pool.query(`SELECT * FROM tipo_pregunta WHERE tipo_pregunta.id = '${id}'`)).rows[0];
+        return  (await pool.query(`SELECT * FROM tipo_pregunta WHERE tipo_pregunta.id = ${id}`)).rows[0];
+     
     }catch{
         return false;
     }
@@ -11,7 +12,10 @@ const get_TipoPregunta = async (id)  => {
 
 const get_TipoPreguntas = async () => {
     try {
-        return (await pool.query(`SELECT * FROM tipo_pregunta`)).rows;
+        const result = (await pool.query(`SELECT * FROM tipo_pregunta`)).rows;
+        if (result.length > 0 )
+        return result;
+        else return false;
     } catch {
         return false;
     }
