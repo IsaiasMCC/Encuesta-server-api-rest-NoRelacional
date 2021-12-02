@@ -4,10 +4,12 @@ const pool = require('../database/connection');
 const get_OpcionRespuestas = async (id)  => {
     try{
         const result =  (await pool.query(`SELECT opcion_respuesta.value FROM pregunta, opcion_respuesta WHERE pregunta.id = ${id} and pregunta.id = opcion_respuesta.id_pregunta`)).rows;
-        if (result > 0)
+        if (result.length > 0)
         return result;
-        else return false;
+        else 
+        return false;
     }catch{
+        
         return false;
     }
 }

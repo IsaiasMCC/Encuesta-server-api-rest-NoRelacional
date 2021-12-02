@@ -5,7 +5,7 @@ const getOpcionRespuesta = async (req, res) => {
     const id = req.params.id;
     // const validarId = id;
     const opcionRespuestas = await (get_OpcionRespuestas(id));
-    console.log(opcionRespuestas);
+    
     if( !opcionRespuestas ){
         return res.status(400).json({ success: false, message: 'Las opciones de respuesta no existen '});
     }

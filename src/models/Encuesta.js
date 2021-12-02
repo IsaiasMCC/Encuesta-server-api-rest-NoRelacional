@@ -1,12 +1,12 @@
 const pool = require('../database/connection');
-
-
+const { get_Seccions } = require('../models/Seccion'); 
+const { Preguntas } = require('../models/Pregunta');
 const get_Encuesta = async (id)  => {
     try{
-        const resul =  (await pool.query(`SELECT pregunta.name FROM encuesta, seccion, pregunta WHERE encuesta.id = ${id} and encuesta.id = seccion.id_encuesta and seccion.id = pregunta.id_seccion`)).rows;
-        if (resul.length > 0)
-        return resul
-        else return false
+        const resul =  (await pool.query(`SELECT id, name, description,state FROM encuesta where id = ${id}`)).rows[0];
+        if( resul === undefined)
+        return false;
+        else return resul;
     }catch{
         return false;
     }
@@ -16,6 +16,7 @@ const get_Encuestas = async () => {
     try {
         const resul = (await pool.query(`SELECT * FROM encuesta`)).rows;
         if (resul.length > 0)
+  
         return resul;
         else
         return false;
@@ -43,9 +44,22 @@ const stateEncuesta = async (id)=> {
     }
 }
 
+const Encuesta = async (id) => {
+    const encuesta = await( get_Encuesta(id));
+    const sections = await( get_Seccions(id));
+    encuesta.sections = sections;
+    for (let index = 0; index < encuesta.sections.length; index++) {
+      
+        const questions = await( Preguntas(sections[index].id));
+        encuesta.sections[index].questions = questions;
+    }
+    return encuesta;
+}
+
 module.exports = {
     get_Encuesta,
     get_Encuestas,
     set_Encuesta,
-    stateEncuesta
+    stateEncuesta,
+    Encuesta
 }
